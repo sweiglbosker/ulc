@@ -16,6 +16,8 @@
 (package
  (name ulc)
  (synopsis "ulc")
- (depends ocaml))
+ (depends
+   ocaml
+   (alcotest :with-test)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html

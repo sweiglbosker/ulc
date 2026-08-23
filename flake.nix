@@ -24,6 +24,7 @@
             ocaml
             dune_3
             utop
+            alcotest
             findlib
             ocaml-lsp
             ocamlformat
