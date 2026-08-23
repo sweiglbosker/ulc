@@ -11,11 +11,21 @@ let rec free = function
   | App (t1, t2) -> StringSet.union (free t1) (free t2)
 ;;
 
-(* in term t, replace every free occurence of the variable named "x" with the replacement term s. *)
+let rec fresh avoid binder =
+  if not (StringSet.mem binder avoid) then binder else fresh avoid (binder ^ "'")
+;;
+
 let rec substitute variable replacement target =
   match target with
   | Var s -> if s = variable then replacement else Var s
   | App (l, r) ->
     App (substitute variable replacement l, substitute variable replacement r)
-  | Abs (binder, body) -> (* TODO *)
+  | Abs (binder, body) ->
+    if binder = variable
+    then Abs (binder, body)
+    else if not (StringSet.mem binder (free replacement))
+    then Abs (binder, substitute variable replacement body)
+    else (
+      let binder' = fresh (StringSet.union (free body) (free replacement)) binder in
+      Abs (binder', substitute variable replacement (substitute binder (Var binder') body)))
 ;;

@@ -5,7 +5,7 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github sweiglbosker/ulc))
 
 (authors "Stefan Weigl-Bosker <stefan@s00.xyz>")
 
