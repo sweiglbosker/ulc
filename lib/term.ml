@@ -5,6 +5,18 @@ type t =
 
 module StringSet = Set.Make (String)
 
+let rec pp fmt = function
+  | Abs (binder, body) ->
+      Format.fprintf fmt "λ%s. %a" binder pp body
+  | term -> pp_app fmt term
+and pp_app fmt = function
+  | App (left, right) ->
+      Format.fprintf fmt "%a %a" pp_app left pp_atom right
+  | term -> pp_atom fmt term
+and pp_atom fmt = function
+  | Var s -> Format.pp_print_string fmt s
+  | term -> Format.fprintf fmt "(%a)" pp term
+
 let rec free = function
   | Var s -> StringSet.singleton s (* nothing is bound *)
   | Abs (x, t) -> StringSet.remove x (free t) (* remove the binding *)
