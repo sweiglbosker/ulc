@@ -17,3 +17,9 @@ let rec step =
      | None -> None)
   | _ -> None
 ;;
+
+let rec eval expr =
+  match step expr with
+  | Some expr' -> eval expr'
+  | None -> expr
+;;
